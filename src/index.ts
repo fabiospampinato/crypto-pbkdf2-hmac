@@ -2,6 +2,7 @@
 /* IMPORT */
 
 import toHex from 'uint8-to-hex';
+import webcrypto from 'tiny-webcrypto';
 
 /* HELPERS */
 
@@ -14,8 +15,8 @@ const makePbkdf2 = ( algorithm: 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512' ) =>
     password = ( typeof password === 'string' ) ? encoder.encode ( password.normalize () ) : password;
     salt = ( typeof salt === 'string' ) ? encoder.encode ( salt ) : salt;
 
-    const key = await crypto.subtle.importKey ( 'raw', password, { name: 'PBKDF2' }, false, ['deriveBits'] );
-    const bits = await crypto.subtle.deriveBits ( { name: 'PBKDF2', salt, iterations, hash: { name: algorithm } }, key, bytesLength * 8 );
+    const key = await webcrypto.subtle.importKey ( 'raw', password, { name: 'PBKDF2' }, false, ['deriveBits'] );
+    const bits = await webcrypto.subtle.deriveBits ( { name: 'PBKDF2', salt, iterations, hash: { name: algorithm } }, key, bytesLength * 8 );
     const hex = toHex ( new Uint8Array ( bits ) );
 
     return hex;

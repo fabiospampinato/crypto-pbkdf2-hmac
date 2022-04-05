@@ -1,7 +1,7 @@
 
 /* IMPORT */
 
-const {default: pbkdf2} = require ( '../dist/node' );
+import pbkdf2 from '../dist/index.js';
 
 /* MAIN */
 

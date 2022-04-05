@@ -1,8 +1,8 @@
 
 /* IMPORT */
 
-const {describe} = require ( 'fava' );
-const {default: pbkdf2} = require ( '../dist/node' );
+import {describe} from 'fava';
+import pbkdf2 from '../dist/index.js';
 
 /* MAIN */
 

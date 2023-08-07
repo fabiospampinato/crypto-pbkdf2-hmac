@@ -10,15 +10,38 @@ const encoder = new TextEncoder ();
 
 const makePbkdf2 = ( algorithm: 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512' ) => {
 
-  const buffer = async ( password: Uint8Array | string, salt: Uint8Array | string, iterations: number, bytesLength: number ): Promise<ArrayBuffer> => {
+  const bufferKey = async ( password: CryptoKey | Uint8Array | string ): Promise<CryptoKey> => {
 
-    password = ( typeof password === 'string' ) ? encoder.encode ( password.normalize () ) : password;
+    if ( password instanceof Uint8Array ) {
+
+      return webcrypto.subtle.importKey ( 'raw', password, { name: 'PBKDF2' }, false, ['deriveBits'] );
+
+    } else if ( typeof password === 'string' ) {
+
+      return bufferKey ( encoder.encode ( password.normalize () ) );
+
+    } else {
+
+      return password;
+
+    }
+
+  };
+
+  const bufferBits = ( password: CryptoKey, salt: Uint8Array | string, iterations: number, bitsLength: number ): Promise<ArrayBuffer> => {
+
     salt = ( typeof salt === 'string' ) ? encoder.encode ( salt ) : salt;
 
-    const key = await webcrypto.subtle.importKey ( 'raw', password, { name: 'PBKDF2' }, false, ['deriveBits'] );
-    const buffer = await webcrypto.subtle.deriveBits ( { name: 'PBKDF2', salt, iterations, hash: { name: algorithm } }, key, bytesLength * 8 );
+    return webcrypto.subtle.deriveBits ( { name: 'PBKDF2', salt, iterations, hash: { name: algorithm } }, password, bitsLength );
 
-    return buffer;
+  };
+
+  const buffer = async ( password: CryptoKey | Uint8Array | string, salt: Uint8Array | string, iterations: number, bytesLength: number ): Promise<ArrayBuffer> => {
+
+    const key = await bufferKey ( password );
+    const bits = await bufferBits ( key, salt, iterations, bytesLength * 8 );
+
+    return bits;
 
   };
 

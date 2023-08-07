@@ -15,32 +15,40 @@ benchmark.config ({
   iterations: 100
 });
 
-benchmark ({
-  name: 'SHA-1',
-  fn: async () => {
-    await pbkdf2.sha1 ( INPUT_SECRET, INPUT_SALT, 1000, 20 );
-  }
-});
+for ( const format of ['buffer', 'uint8', 'hex'] ) {
 
-benchmark ({
-  name: 'SHA-256',
-  fn: async () => {
-    await pbkdf2.sha256 ( INPUT_SECRET, INPUT_SALT, 1000, 32 );
-  }
-});
+  benchmark.group ( format, () => {
 
-benchmark ({
-  name: 'SHA-384',
-  fn: async () => {
-    await pbkdf2.sha384 ( INPUT_SECRET, INPUT_SALT, 1000, 48 );
-  }
-});
+    benchmark ({
+      name: 'SHA-1',
+      fn: async () => {
+        await pbkdf2.sha1[format]( INPUT_SECRET, INPUT_SALT, 1000, 20 );
+      }
+    });
 
-benchmark ({
-  name: 'SHA-512',
-  fn: async () => {
-    await pbkdf2.sha512 ( INPUT_SECRET, INPUT_SALT, 1000, 64 );
-  }
-});
+    benchmark ({
+      name: 'SHA-256',
+      fn: async () => {
+        await pbkdf2.sha256[format]( INPUT_SECRET, INPUT_SALT, 1000, 32 );
+      }
+    });
+
+    benchmark ({
+      name: 'SHA-384',
+      fn: async () => {
+        await pbkdf2.sha384[format]( INPUT_SECRET, INPUT_SALT, 1000, 48 );
+      }
+    });
+
+    benchmark ({
+      name: 'SHA-512',
+      fn: async () => {
+        await pbkdf2.sha512[format]( INPUT_SECRET, INPUT_SALT, 1000, 64 );
+      }
+    });
+
+  });
+
+}
 
 benchmark.summary ();

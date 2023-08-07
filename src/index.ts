@@ -45,13 +45,13 @@ const makePbkdf2 = ( algorithm: 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512' ) =>
 
   };
 
-  const uint8 = async ( password: Uint8Array | string, salt: Uint8Array | string, iterations: number, bytesLength: number ): Promise<Uint8Array> => {
+  const uint8 = async ( password: CryptoKey | Uint8Array | string, salt: Uint8Array | string, iterations: number, bytesLength: number ): Promise<Uint8Array> => {
 
     return new Uint8Array ( await buffer ( password, salt, iterations, bytesLength ) );
 
   };
 
-  const hex = async ( password: Uint8Array | string, salt: Uint8Array | string, iterations: number, bytesLength: number ): Promise<string> => {
+  const hex = async ( password: CryptoKey | Uint8Array | string, salt: Uint8Array | string, iterations: number, bytesLength: number ): Promise<string> => {
 
     return toHex ( await uint8 ( password, salt, iterations, bytesLength ) );
 

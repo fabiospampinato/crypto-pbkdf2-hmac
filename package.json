@@ -30,6 +30,7 @@
     "uint8-to-hex": "^2.0.0"
   },
   "devDependencies": {
+    "benchloop": "^2.1.1",
     "fava": "^0.2.1",
     "tsex": "^3.0.1",
     "typescript": "^5.1.6"

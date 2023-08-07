@@ -1,40 +1,46 @@
 
 /* IMPORT */
 
+import benchmark from 'benchloop';
 import pbkdf2 from '../dist/index.js';
+
+/* HELPERS */
+
+const INPUT_SECRET = 'P@ssword!';
+const INPUT_SALT = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
 
 /* MAIN */
 
-const benchmark = async () => {
+benchmark.config ({
+  iterations: 100
+});
 
-  console.time ( 'benchmark' );
-
-  console.time ( 'benchmark.sha1' );
-  for ( let i = 0, l = 100; i < l; i++ ) {
-    await pbkdf2.sha1 ( 'P@ssword!', 'da39a3ee5e6b4b0d3255bfef95601890afd80709', 1000, 20 );
+benchmark ({
+  name: 'SHA-1',
+  fn: async () => {
+    await pbkdf2.sha1 ( INPUT_SECRET, INPUT_SALT, 1000, 20 );
   }
-  console.timeEnd ( 'benchmark.sha1' );
+});
 
-  console.time ( 'benchmark.sha256' );
-  for ( let i = 0, l = 100; i < l; i++ ) {
-    await pbkdf2.sha256 ( 'P@ssword!', 'da39a3ee5e6b4b0d3255bfef95601890afd80709', 1000, 32 );
+benchmark ({
+  name: 'SHA-256',
+  fn: async () => {
+    await pbkdf2.sha256 ( INPUT_SECRET, INPUT_SALT, 1000, 32 );
   }
-  console.timeEnd ( 'benchmark.sha256' );
+});
 
-  console.time ( 'benchmark.sha384' );
-  for ( let i = 0, l = 100; i < l; i++ ) {
-    await pbkdf2.sha384 ( 'P@ssword!', 'da39a3ee5e6b4b0d3255bfef95601890afd80709', 1000, 48 );
+benchmark ({
+  name: 'SHA-384',
+  fn: async () => {
+    await pbkdf2.sha384 ( INPUT_SECRET, INPUT_SALT, 1000, 48 );
   }
-  console.timeEnd ( 'benchmark.sha384' );
+});
 
-  console.time ( 'benchmark.sha512' );
-  for ( let i = 0, l = 100; i < l; i++ ) {
-    await pbkdf2.sha512 ( 'P@ssword!', 'da39a3ee5e6b4b0d3255bfef95601890afd80709', 1000, 64 );
+benchmark ({
+  name: 'SHA-512',
+  fn: async () => {
+    await pbkdf2.sha512 ( INPUT_SECRET, INPUT_SALT, 1000, 64 );
   }
-  console.timeEnd ( 'benchmark.sha512' );
+});
 
-  console.timeEnd ( 'benchmark' );
-
-};
-
-benchmark ();
+benchmark.summary ();

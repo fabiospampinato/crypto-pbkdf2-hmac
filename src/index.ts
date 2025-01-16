@@ -1,8 +1,8 @@
 
 /* IMPORT */
 
-import toHex from 'uint8-to-hex';
 import webcrypto from 'tiny-webcrypto';
+import toHex from 'uint8-to-hex';
 
 /* HELPERS */
 

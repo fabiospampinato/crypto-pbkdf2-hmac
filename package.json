@@ -3,7 +3,7 @@
   "repository": "github:fabiospampinato/crypto-pbkdf2-hmac",
   "description": "Isomorphic wrapper for the PBKDF2-HMAC key derivation function.",
   "license": "MIT",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
